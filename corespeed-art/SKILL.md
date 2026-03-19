@@ -16,6 +16,13 @@ metadata:
               "bins": ["uv"],
               "label": "Install uv (brew)",
             },
+            {
+              "id": "uv-shell",
+              "kind": "shell",
+              "command": "curl -LsSf https://astral.sh/uv/install.sh | sh",
+              "bins": ["uv"],
+              "label": "Install uv (curl, Linux/macOS)",
+            },
           ],
       },
   }
