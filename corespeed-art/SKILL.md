@@ -13,8 +13,9 @@ metadata:
               "id": "uv-brew",
               "kind": "brew",
               "formula": "uv",
+              "tap": "homebrew/core",
               "bins": ["uv"],
-              "label": "Install uv (brew)",
+              "label": "Install uv via Homebrew core (https://github.com/astral-sh/uv)",
             },
           ],
       },
@@ -92,6 +93,7 @@ uv run {baseDir}/scripts/fal.py ENDPOINT --json '{"param":"value"}' -f output.ex
 
 ## Notes
 
+- **No manual Python setup required.** The script uses [PEP 723 inline metadata](https://peps.python.org/pep-0723/). `uv run` automatically creates an isolated virtual environment and installs the `fal-client` dependency on first run.
 - fal.ai uses a **queue** system — the script polls until generation completes.
 - Video generation can take 30s–3min.
 - Use timestamps in filenames: `yyyy-mm-dd-hh-mm-ss-name.ext`.
