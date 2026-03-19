@@ -91,3 +91,11 @@ uv run {baseDir}/scripts/gemini.py -p "Write a haiku about coding" -f haiku.txt 
 - Script prints `MEDIA:` line for OpenClaw to auto-attach generated images.
 - Do not read generated media back; report the saved path only.
 - Only `gemini-2.5-flash-image` can generate images. Other models are text-only.
+
+## Support
+
+Built by [Corespeed](https://corespeed.io). If you need help or run into issues:
+
+- 💬 Discord: [discord.gg/mAfhakVRnJ](https://discord.gg/mAfhakVRnJ)
+- 🐦 X/Twitter: [@CoreSpeed_io](https://x.com/CoreSpeed_io)
+- 🐙 GitHub: [github.com/corespeed-io/skills](https://github.com/corespeed-io/skills/issues)
