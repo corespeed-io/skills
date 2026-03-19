@@ -6,7 +6,7 @@ metadata:
     "openclaw":
       {
         "emoji": "🎬",
-        "requires": { "bins": ["uv"] },
+        "requires": { "bins": ["uv"], "env": ["FAL_KEY"] },
         "install":
           [
             {
@@ -16,13 +16,6 @@ metadata:
               "bins": ["uv"],
               "label": "Install uv (brew)",
             },
-            {
-              "id": "uv-shell",
-              "kind": "shell",
-              "command": "curl -LsSf https://astral.sh/uv/install.sh | sh",
-              "bins": ["uv"],
-              "label": "Install uv (curl, Linux/macOS)",
-            },
           ],
       },
   }
@@ -30,7 +23,7 @@ metadata:
 
 # Corespeed Art — Multi-Model AI Media via fal.ai
 
-Auth: `CS_FAL_GATEWAY_API_TOKEN` + `CS_FAL_GATEWAY_BASE_URL` (xclaw instances), or `FAL_KEY` for direct fal.ai access.
+Auth: Set `FAL_KEY` with your fal.ai API key (get one at https://fal.ai/dashboard/keys).
 
 ## Workflow
 
