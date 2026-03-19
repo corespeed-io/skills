@@ -41,6 +41,7 @@ uv run {baseDir}/scripts/gemini.py --prompt "your prompt" -f output.ext [-i inpu
 - `--input`, `-i` — Input image file(s), repeat for multiple
 - `--model`, `-m` — Model name (default: `gemini-2.5-flash-image`)
 - `--modalities` — Response type: `auto`, `image`, `text`, `image+text` (default: `auto`)
+- `--json` — Output structured JSON (recommended for agent consumption)
 
 Output format is determined by file extension: `.png`/`.jpg` → image generation, `.txt`/`.md` → text output.
 
@@ -91,6 +92,7 @@ uv run {baseDir}/scripts/gemini.py -p "Write a haiku about coding" -f haiku.txt 
 - Script prints `MEDIA:` line for OpenClaw to auto-attach generated images.
 - Do not read generated media back; report the saved path only.
 - Only `gemini-2.5-flash-image` can generate images. Other models are text-only.
+- Use `--json` for structured output: `{"ok": true, "files": [...], "text": "...", "model": "...", "tokens": {...}}`
 
 ## Support
 
