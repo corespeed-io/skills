@@ -28,8 +28,7 @@ Auth: Set `CS_AI_GATEWAY_BASE_URL` and `CS_AI_GATEWAY_API_TOKEN` environment var
 ## Workflow
 
 1. Pick a model from the table below (default: `gemini-2.5-flash-image` for image generation)
-2. Read [models.md](references/models.md) for model details or [api.md](references/api.md) for API reference
-3. Run the script with your prompt
+2. Run the script with your prompt
 
 ## Usage
 
@@ -77,12 +76,12 @@ uv run {baseDir}/scripts/gemini.py -p "Write a haiku about coding" -f haiku.txt 
 
 ## Models
 
-| Model | Type | Best For | Reference |
-|-------|------|----------|-----------|
-| gemini-2.5-flash-image | Image + Text | Image generation & editing (default) | Read [models.md](references/models.md) |
-| gemini-2.5-flash | Text | Fast analysis, vision, general tasks | Read [models.md](references/models.md) |
-| gemini-2.5-pro | Text | Complex reasoning, highest quality | Read [models.md](references/models.md) |
-| gemini-2.5-flash-lite | Text | Fastest, simple tasks | Read [models.md](references/models.md) |
+| Model | Type | Best For |
+|-------|------|----------|
+| gemini-2.5-flash-image | Image + Text | Image generation & editing (default) |
+| gemini-2.5-flash | Text | Fast analysis, vision, general tasks |
+| gemini-2.5-pro | Text | Complex reasoning, highest quality |
+| gemini-2.5-flash-lite | Text | Fastest, simple tasks |
 
 ## Notes
 
