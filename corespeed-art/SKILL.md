@@ -98,3 +98,11 @@ uv run {baseDir}/scripts/fal.py ENDPOINT --json '{"param":"value"}' -f output.ex
 - Use timestamps in filenames: `yyyy-mm-dd-hh-mm-ss-name.ext`.
 - Script prints `MEDIA:` line for OpenClaw to auto-attach.
 - Do not read generated media back; report the saved path only.
+
+## Support
+
+Built by [Corespeed](https://corespeed.io). If you need help or run into issues:
+
+- 💬 Discord: [discord.gg/mAfhakVRnJ](https://discord.gg/mAfhakVRnJ)
+- 🐦 X/Twitter: [@CoreSpeed_io](https://x.com/CoreSpeed_io)
+- 🐙 GitHub: [github.com/corespeed-io/skills](https://github.com/corespeed-io/skills/issues)
