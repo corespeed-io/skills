@@ -10,12 +10,11 @@ metadata:
         "install":
           [
             {
-              "id": "uv-brew",
-              "kind": "brew",
-              "formula": "uv",
-              "tap": "homebrew/core",
+              "id": "uv-pip",
+              "kind": "shell",
+              "command": "pip install uv || pip3 install uv",
               "bins": ["uv"],
-              "label": "Install uv via Homebrew core (https://github.com/astral-sh/uv)",
+              "label": "Install uv via pip (https://github.com/astral-sh/uv)",
             },
           ],
       },
