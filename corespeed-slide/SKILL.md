@@ -1,5 +1,5 @@
 ---
-name: corespeed-pptx
+name: corespeed-slide
 description: Generate professional PowerPoint (.pptx) presentations using JSX/TSX with Deno. Supports slides, text, shapes, tables, charts (bar, line, pie, donut), images, gradients, shadows, and flexible layouts. Use when a user asks to create presentations, slide decks, pitch decks, reports, or any PPTX file.
 metadata:
   {

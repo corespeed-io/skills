@@ -1,5 +1,5 @@
 ---
-name: corespeed-art
+name: corespeed-studio
 description: Generate video, images, audio, and music using 40+ AI models via fal.ai. Use for video generation (Kling v3, Sora 2, Veo 3.1, LTX 2.3, Pixverse v5), image generation (Nano Banana 2, FLUX 2 Pro/Schnell, GPT Image 1.5, Qwen Image 2 Pro, Recraft V4, Seedream 5), text-to-speech (MiniMax Speech-02 HD), music/sound effects (Beatoven), and utilities (Topaz upscale, background removal, lipsync). Use when a user asks to create videos, generate images, produce voiceovers, create music/sound effects, upscale media, remove backgrounds, or combine multiple AI media models in a single workflow.
 metadata:
   {
