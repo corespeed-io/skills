@@ -105,6 +105,29 @@ The library uses fixed-size containers. Text that exceeds the container **will o
 
 Pick one palette. Don't mix.
 
+### Page Numbers
+
+The library has no built-in page numbers. Use `<Positioned>` on every slide:
+
+```tsx
+// Helper function — put in every .tsx file
+const PageNum = ({ n, total, color }: { n: number; total: number; color: HexColor }) => (
+  <Positioned x={u.in(12.4)} y={u.in(7)} w={u.in(0.7)} h={u.in(0.3)}>
+    <Text.P style={{ fontSize: u.font(10), fontColor: color, align: "right" }}>
+      {n} / {total}
+    </Text.P>
+  </Positioned>
+);
+
+// Use on every slide
+<Slide background={bg}>
+  <PageNum n={1} total={8} color={mutedColor} />
+  {/* ...slide content... */}
+</Slide>
+```
+
+Always add page numbers. They help the audience track progress and reference specific slides.
+
 ## Writing Slides
 
 Create a `.tsx` file. It must export a `deck` variable:
