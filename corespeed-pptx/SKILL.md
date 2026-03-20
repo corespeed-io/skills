@@ -112,8 +112,13 @@ The library has no built-in page numbers. Use `<Positioned>` on every slide:
 ```tsx
 // Helper — put at top of every .tsx file
 const TOTAL = 10; // update to actual slide count
+
+// ⚠️ CRITICAL: <Positioned> coordinates are RELATIVE TO CONTENT AREA (after slide padding).
+// For 16:9 slide (13.33 x 7.5in) with padding 0.8/1.0/0.7/1.0:
+//   Content area = (13.33 - 1.0 - 1.0) x (7.5 - 0.8 - 0.7) = 11.33 x 6.0in
+//   Bottom-right page number: x = contentWidth - 1.0, y = contentHeight - 0.4
 const PageNum = ({ n }: { n: number }) => (
-  <Positioned x={u.in(11.8)} y={u.in(6.8)} w={u.in(1)} h={u.in(0.4)}>
+  <Positioned x={u.in(10.33)} y={u.in(5.6)} w={u.in(1)} h={u.in(0.4)}>
     <Text.P style={{ fontSize: u.font(12), fontColor: textColor, align: "right" }}>
       {n} / {TOTAL}
     </Text.P>
@@ -131,8 +136,8 @@ const PageNum = ({ n }: { n: number }) => (
 
 Rules:
 - **Always add page numbers.** They help the audience track progress and reference slides.
+- **`<Positioned>` is relative to content area**, NOT the slide origin. Calculate: `slideWidth - leftPadding - rightPadding = contentWidth`. Position within those bounds.
 - Use the **main text color** (not muted) — at 12pt it must be readable.
-- Position at **bottom-right** to not interfere with content.
 - Place `<PageNum>` **inside `<Slide>` but outside `<Column>`** — `<Positioned>` doesn't consume flow space.
 
 ## Writing Slides
