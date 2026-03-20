@@ -60,6 +60,39 @@ Follow these rules for every deck:
 8. **Consistent rhythm.** Same gaps, same padding, same font sizes across all slides. Use `layout` defaults on `<Presentation>`.
 9. **16:9 widescreen.** Always set `slideWidth={u.in(13.33)} slideHeight={u.in(7.5)}` on `<Presentation>`. The library defaults to 4:3 which looks wrong on modern screens.
 
+### Preventing Text Overflow (critical)
+
+The library uses fixed-size containers. Text that exceeds the container **will overflow and be clipped**. Follow these rules strictly:
+
+1. **Use `grow` instead of fixed `h` whenever possible.** Inside `<Row>` or `<Column>`, prefer `grow={1}` over explicit `h={u.in(X)}`. The layout engine will calculate the correct size.
+2. **Budget height for text.** Each line of 14pt text needs ~0.3in. A card with title + 4 bullet points needs at minimum: `0.3 (title) + 4×0.3 (bullets) + 0.6 (padding) = 1.8in`. Always round up.
+3. **Fewer words, never more containers.** If text doesn't fit, shorten the text — don't shrink the font or the container.
+4. **Max 5 bullet points per card.** If you need more, split into two cards or two slides.
+5. **Test the math.** For `<Align>` with explicit `h`: count lines × 0.3in + padding × 2. If the result > h, increase h or cut text.
+6. **Leave 20% headroom.** If you calculate 2.0in needed, set h to at least 2.4in.
+7. **Never nest `<Align>` with tight heights inside `<Stack>`.** Use `<Column>` with `grow` instead — it flexes to fit content.
+8. **Safe card pattern:**
+   ```tsx
+   {/* ✅ GOOD: grow handles height automatically */}
+   <Column>
+     <Shape preset="roundRect" style={cardStyle} grow={1}>
+       <Text.P style={titleStyle}>Title</Text.P>
+       <Text.P style={bodyStyle}>Body text here</Text.P>
+     </Shape>
+   </Column>
+
+   {/* ❌ BAD: fixed h too small, text will overflow */}
+   <Align x="center" y="center" w={u.in(3)} h={u.in(1.5)}>
+     <Text>
+       <Text.P>Title</Text.P>
+       <Text.P>Line 1</Text.P>
+       <Text.P>Line 2</Text.P>
+       <Text.P>Line 3</Text.P>
+       <Text.P>Line 4</Text.P>  {/* overflows! */}
+     </Text>
+   </Align>
+   ```
+
 ### Color Palettes (reference)
 
 | Style | Background | Primary | Accent | Text |
