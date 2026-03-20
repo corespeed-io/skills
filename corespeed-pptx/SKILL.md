@@ -125,12 +125,12 @@ const PageNum = ({ n }: { n: number }) => (
   </Positioned>
 );
 
-// Use on every slide — INSIDE <Slide>, OUTSIDE <Column>
+// Use on every slide — LAST child of <Slide> (renders on top, never occluded)
 <Slide background={bg}>
-  <PageNum n={1} />
   <Column>
     {/* ...slide content... */}
   </Column>
+  <PageNum n={1} />  {/* ← MUST be last child for highest z-order */}
 </Slide>
 ```
 
@@ -138,7 +138,7 @@ Rules:
 - **Always add page numbers.** They help the audience track progress and reference slides.
 - **`<Positioned>` is relative to content area**, NOT the slide origin. Calculate: `slideWidth - leftPadding - rightPadding = contentWidth`. Position within those bounds.
 - Use the **main text color** (not muted) — at 12pt it must be readable.
-- Place `<PageNum>` **inside `<Slide>` but outside `<Column>`** — `<Positioned>` doesn't consume flow space.
+- Place `<PageNum>` as the **last child of `<Slide>`** — PPTX has no z-index, rendering order = declaration order. Last element renders on top, so page numbers are never occluded by other content.
 
 ## Writing Slides
 
