@@ -93,6 +93,46 @@ The library uses fixed-size containers. Text that exceeds the container **will o
    </Align>
    ```
 
+### Table Overflow Prevention (critical)
+
+Tables are the most common source of overflow. Follow these rules:
+
+1. **Column widths must sum to ≤ content width.** For 16:9 slide with 1in padding each side: content width = 11.33in. All `cols` values must sum to ≤ 11.33in.
+   ```tsx
+   // ✅ GOOD: 2.5 + 4.0 + 4.0 = 10.5in < 11.33in
+   <Table cols={[u.in(2.5), u.in(4.0), u.in(4.0)]}>
+
+   // ❌ BAD: 3.0 + 5.0 + 5.0 = 13.0in > 11.33in → overflows right
+   <Table cols={[u.in(3.0), u.in(5.0), u.in(5.0)]}>
+   ```
+
+2. **Give tables `grow` weight in `<Column>`.** `<Column>` distributes height equally by default. A table with 5 rows needs more space than a title. Use `grow` to allocate proportionally:
+   ```tsx
+   // ✅ GOOD: table gets 4x the space of title
+   <Column>
+     <Text.P style={titleStyle}>Title</Text.P>       {/* grow=1 default */}
+     <Table cols={[...]} grow={4}>                    {/* gets 4x height */}
+       <Table.Row>...</Table.Row>
+       ...
+     </Table>
+   </Column>
+
+   // ❌ BAD: Column splits equally, table gets squeezed
+   <Column>
+     <Text.P>Label</Text.P>
+     <Text.P>Title</Text.P>
+     <Table cols={[...]}>    {/* gets only 1/3 of height → rows overflow */}
+       ...5 rows...
+     </Table>
+   </Column>
+   ```
+
+3. **Budget row height.** Each row of 12pt text needs ~0.45in (text + padding). Header row: 0.45in. A 5-row table needs: `0.45 + 4×0.45 = 2.25in` minimum.
+
+4. **Keep cell text short.** Max ~40 chars per cell. If text wraps to 2 lines, the row needs 0.65in instead of 0.45in.
+
+5. **Prefer fewer rows.** Max 5-6 data rows per slide. If you need more, split into two slides.
+
 ### Color Palettes (reference)
 
 | Style | Background | Primary | Accent | Text |
