@@ -58,6 +58,7 @@ Follow these rules for every deck:
 6. **Data-ink ratio** (Tufte). Every pixel should convey information. Remove gridlines, borders, and labels that don't add meaning.
 7. **Visual hierarchy.** Title → Key number/chart → Supporting text. The eye should know where to go instantly.
 8. **Consistent rhythm.** Same gaps, same padding, same font sizes across all slides. Use `layout` defaults on `<Presentation>`.
+9. **16:9 widescreen.** Always set `slideWidth={u.in(13.33)} slideHeight={u.in(7.5)}` on `<Presentation>`. The library defaults to 4:3 which looks wrong on modern screens.
 
 ### Color Palettes (reference)
 
@@ -80,7 +81,7 @@ Create a `.tsx` file. It must export a `deck` variable:
 import { Align, clr, Presentation, Slide, Text, u } from "@pixel/pptx";
 
 export const deck = (
-  <Presentation title="My Deck">
+  <Presentation title="My Deck" slideWidth={u.in(13.33)} slideHeight={u.in(7.5)}>
     <Slide background={{ kind: "solid", color: clr.hex("F7F4EE") }}>
       <Align x="center" y="center" w={u.in(8)} h={u.in(1.5)}>
         <Text.P style={{ fontSize: u.font(32), bold: true }}>
@@ -207,7 +208,7 @@ const s = {
 };
 
 export const deck = (
-  <Presentation title="Q2 Review" layout={{
+  <Presentation title="Q2 Review" slideWidth={u.in(13.33)} slideHeight={u.in(7.5)} layout={{
     slidePadding: u.in(0.6),
     rowGap: u.in(0.35),
     columnGap: u.in(0.35),
