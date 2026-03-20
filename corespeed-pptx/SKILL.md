@@ -110,23 +110,30 @@ Pick one palette. Don't mix.
 The library has no built-in page numbers. Use `<Positioned>` on every slide:
 
 ```tsx
-// Helper function — put in every .tsx file
-const PageNum = ({ n, total, color }: { n: number; total: number; color: HexColor }) => (
-  <Positioned x={u.in(12.4)} y={u.in(7)} w={u.in(0.7)} h={u.in(0.3)}>
-    <Text.P style={{ fontSize: u.font(10), fontColor: color, align: "right" }}>
-      {n} / {total}
+// Helper — put at top of every .tsx file
+const TOTAL = 10; // update to actual slide count
+const PageNum = ({ n }: { n: number }) => (
+  <Positioned x={u.in(11.8)} y={u.in(6.8)} w={u.in(1)} h={u.in(0.4)}>
+    <Text.P style={{ fontSize: u.font(12), fontColor: textColor, align: "right" }}>
+      {n} / {TOTAL}
     </Text.P>
   </Positioned>
 );
 
-// Use on every slide
+// Use on every slide — INSIDE <Slide>, OUTSIDE <Column>
 <Slide background={bg}>
-  <PageNum n={1} total={8} color={mutedColor} />
-  {/* ...slide content... */}
+  <PageNum n={1} />
+  <Column>
+    {/* ...slide content... */}
+  </Column>
 </Slide>
 ```
 
-Always add page numbers. They help the audience track progress and reference specific slides.
+Rules:
+- **Always add page numbers.** They help the audience track progress and reference slides.
+- Use the **main text color** (not muted) — at 12pt it must be readable.
+- Position at **bottom-right** to not interfere with content.
+- Place `<PageNum>` **inside `<Slide>` but outside `<Column>`** — `<Positioned>` doesn't consume flow space.
 
 ## Writing Slides
 
