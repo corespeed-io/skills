@@ -40,6 +40,37 @@ deno run --allow-read --allow-write --config {baseDir}/scripts/deno.json {baseDi
 - Second arg: output `.pptx` filename
 - `--json` — structured JSON output for agent consumption
 
+## Design Principles
+
+These rules are distilled from the three masters of presentation design:
+
+- **Edward Tufte** (Yale professor, *The Visual Display of Quantitative Information*) — maximize data-ink ratio, remove chartjunk, every pixel must earn its place
+- **Nancy Duarte** (designed Al Gore's *An Inconvenient Truth*, author of *Slide:ology*) — one idea per slide, visual contrast creates meaning, the audience is the hero
+- **Garr Reynolds** (author of *Presentation Zen*) — restraint, whitespace, signal over noise, simplicity is the ultimate sophistication
+
+Follow these rules for every deck:
+
+1. **One idea per slide** (Duarte). If you need a second point, make a second slide.
+2. **Font ≥ 24pt body, ≥ 32pt titles.** If the audience can't read it from the back row, it's too small.
+3. **Max 3 colors** (Reynolds). One primary, one accent, one neutral. Derive the rest as tints/shades.
+4. **Whitespace is design** (Reynolds). Generous padding (≥ 0.5in slide margins, ≥ 0.2in element padding). Never fill every inch.
+5. **Contrast over decoration** (Duarte). No drop shadows unless essential. No gradients for ornament. Use contrast (size, weight, color) to create hierarchy.
+6. **Data-ink ratio** (Tufte). Every pixel should convey information. Remove gridlines, borders, and labels that don't add meaning.
+7. **Visual hierarchy.** Title → Key number/chart → Supporting text. The eye should know where to go instantly.
+8. **Consistent rhythm.** Same gaps, same padding, same font sizes across all slides. Use `layout` defaults on `<Presentation>`.
+
+### Color Palettes (reference)
+
+| Style | Background | Primary | Accent | Text |
+|-------|-----------|---------|--------|------|
+| **Dark (OpenAI)** | `0D0D0D` | `10A37F` | `6E42D3` | `FFFFFF` |
+| **Warm (Anthropic)** | `FDF6EE` | `D97706` | `1F4E79` | `1C1917` |
+| **Clean (Apple)** | `FFFFFF` | `007AFF` | `FF3B30` | `1D1D1F` |
+| **Academic (Stanford)** | `FFFFFF` | `8C1515` | `2E2D29` | `2E2D29` |
+| **Neutral (Stripe)** | `F6F9FC` | `635BFF` | `0A2540` | `0A2540` |
+
+Pick one palette. Don't mix.
+
 ## Writing Slides
 
 Create a `.tsx` file. It must export a `deck` variable:
@@ -138,7 +169,7 @@ const style = {
 
 Backgrounds support `solid`, `linear-gradient`, and image.
 
-## Example: Multi-Slide Deck
+## Example: Professional Multi-Slide Deck (Anthropic-warm style)
 
 ```tsx
 /** @jsxImportSource @pixel/pptx */
@@ -147,47 +178,91 @@ import {
   Stack, Table, Text, u, type Style,
 } from "@pixel/pptx";
 
-const title: Style = {
-  fill: { kind: "solid", color: clr.hex("1F4E79") },
-  fontSize: u.font(28), fontColor: clr.hex("FFFFFF"), bold: true,
-  verticalAlign: "middle", padding: u.in(0.2),
+// --- Design tokens (pick ONE palette, use everywhere) ---
+const bg     = clr.hex("FDF6EE");  // warm cream
+const card   = clr.hex("FFFFFF");
+const primary = clr.hex("D97706"); // amber
+const dark   = clr.hex("1C1917");  // near-black
+const muted  = clr.hex("78716C");  // warm gray
+const accent = clr.hex("1F4E79");  // deep blue for charts
+
+// --- Reusable styles ---
+const s = {
+  heroBar: {
+    fill: { kind: "solid", color: primary },
+    verticalAlign: "middle",
+    padding: { top: u.in(0.3), right: u.in(0.5), bottom: u.in(0.3), left: u.in(0.5) },
+  } satisfies Style,
+  h1: { fontSize: u.font(36), fontColor: card, bold: true } satisfies Style,
+  subtitle: { fontSize: u.font(16), fontColor: clr.hex("FEF3C7") } satisfies Style,
+  h2: { fontSize: u.font(24), fontColor: dark, bold: true } satisfies Style,
+  body: { fontSize: u.font(14), fontColor: muted } satisfies Style,
+  bigNum: { fontSize: u.font(48), fontColor: primary, bold: true, align: "center" } satisfies Style,
+  bigLabel: { fontSize: u.font(14), fontColor: muted, align: "center" } satisfies Style,
+  cardBox: {
+    fill: { kind: "solid", color: card },
+    padding: u.in(0.3),
+    shadow: { color: clr.hex("000000"), blur: u.emu(8000), distance: u.emu(2000), angle: 90, alpha: u.pct(8) },
+  } satisfies Style,
 };
 
 export const deck = (
-  <Presentation title="Q2 Report" layout={{ rowGap: u.in(0.3), columnGap: u.in(0.3) }}>
-    <Slide background={{ kind: "solid", color: clr.hex("F7F4EE") }}>
+  <Presentation title="Q2 Review" layout={{
+    slidePadding: u.in(0.6),
+    rowGap: u.in(0.35),
+    columnGap: u.in(0.35),
+  }}>
+
+    {/* Slide 1: Title — one idea only */}
+    <Slide background={{ kind: "solid", color: bg }}>
       <Column>
-        <Shape preset="roundRect" h={u.in(1.2)} style={title}>
-          <Text.P>Q2 Report</Text.P>
+        <Shape preset="roundRect" h={u.in(1.6)} style={s.heroBar}>
+          <Text.P style={s.h1}>Q2 2025 Review</Text.P>
+          <Text.P style={s.subtitle}>Growth ahead of plan · 15% QoQ</Text.P>
         </Shape>
         <Row>
-          <Stack grow={1}>
-            <Shape preset="roundRect" style={{ fill: { kind: "solid", color: clr.hex("FFFFFF") } }} />
-            <Align x="center" y="center" w={u.in(4)} h={u.in(3)}>
-              <Chart.Bar
-                data={[
-                  { q: "Q1", rev: 8 }, { q: "Q2", rev: 12 },
-                  { q: "Q3", rev: 10 }, { q: "Q4", rev: 15 },
-                ]}
-                category="q"
-                series={[{ name: "Revenue", value: "rev", color: clr.hex("2678B4") }]}
-                labels
-              />
-            </Align>
-          </Stack>
-          <Table cols={[u.in(1.5), u.in(1)]} grow={1}>
-            <Table.Row height={u.in(0.4)}>
-              <Table.Cell style={{ bold: true }}>Metric</Table.Cell>
-              <Table.Cell style={{ bold: true }}>Value</Table.Cell>
-            </Table.Row>
-            <Table.Row height={u.in(0.4)}>
-              <Table.Cell>Revenue</Table.Cell>
-              <Table.Cell>$1.2M</Table.Cell>
-            </Table.Row>
-          </Table>
+          {/* Big number cards — Tufte: let the data speak */}
+          {[
+            { num: "$1.2M", label: "Revenue" },
+            { num: "15%", label: "Growth" },
+            { num: "61", label: "NPS" },
+          ].map(({ num, label }) => (
+            <Stack grow={1}>
+              <Shape preset="roundRect" style={s.cardBox} />
+              <Align x="center" y="center" w={u.in(2.5)} h={u.in(2.5)}>
+                <Text gap={u.in(0.1)}>
+                  <Text.P style={s.bigNum}>{num}</Text.P>
+                  <Text.P style={s.bigLabel}>{label}</Text.P>
+                </Text>
+              </Align>
+            </Stack>
+          ))}
         </Row>
       </Column>
     </Slide>
+
+    {/* Slide 2: Chart — one chart, full focus */}
+    <Slide background={{ kind: "solid", color: bg }}>
+      <Column>
+        <Text.P style={s.h2}>Revenue by Quarter</Text.P>
+        <Stack grow={1}>
+          <Shape preset="roundRect" style={s.cardBox} />
+          <Align x="center" y="center" w={u.in(8)} h={u.in(4)}>
+            <Chart.Bar
+              data={[
+                { q: "Q1", rev: 0.8 }, { q: "Q2", rev: 1.2 },
+                { q: "Q3", rev: 1.0 }, { q: "Q4", rev: 1.5 },
+              ]}
+              category="q"
+              series={[{ name: "Revenue ($M)", value: "rev", color: accent }]}
+              labels
+              valueAxis={{ min: 0, max: 2 }}
+            />
+          </Align>
+        </Stack>
+      </Column>
+    </Slide>
+
   </Presentation>
 );
 ```
