@@ -33,8 +33,14 @@ def _get_client(json_mode: bool = False) -> genai.Client:
             typer.echo(f"Error: {msg}", err=True)
         raise typer.Exit(1)
     return genai.Client(
-        api_key=api_token,
-        http_options=types.HttpOptions(base_url=f"{base_url.rstrip('/')}/google-ai-studio"),
+        api_key="gateway",  # placeholder required by library; gateway uses Bearer auth
+        http_options=types.HttpOptions(
+            base_url=f"{base_url.rstrip('/')}/google-ai-studio",
+            headers={
+                "Authorization": f"Bearer {api_token}",
+                "x-goog-api-key": "",  # suppress library default to avoid upstream rejection
+            },
+        ),
     )
 
 
