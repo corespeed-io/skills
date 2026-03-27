@@ -1,6 +1,6 @@
 ---
 name: corespeed-nanobanana
-description: Generate and edit images using Google Gemini models via Corespeed AI Gateway. Supports text-to-image generation, image editing, multi-image input, and text rendering in images using gemini-2.5-flash-image. Also supports text generation and image analysis with gemini-2.5-flash, gemini-2.5-pro, and gemini-2.5-flash-lite. Use when a user asks to create images, edit photos, analyze images, or generate text with Gemini models.
+description: Generate and edit images using Gemini via Corespeed AI Gateway. Use when a user asks to create, draw, design, or generate an image, picture, illustration, icon, logo, banner, thumbnail, or screenshot mockup. Also triggers on image editing (remove background, resize, recolor, combine photos), image analysis (describe, compare, OCR), and text generation with Gemini models (gemini-2.5-flash-image, gemini-2.5-flash, gemini-2.5-pro). Trigger phrases include: "画一个", "生成图片", "做一张图", "帮我P图", "make me an image", "generate a picture", "edit this photo", "what's in this image".
 metadata:
   {
     "openclaw":
