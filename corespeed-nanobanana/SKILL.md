@@ -23,7 +23,16 @@ metadata:
 
 # Corespeed NanoBanana — Gemini Image & Text Generation
 
-Auth: Set `CS_AI_GATEWAY_BASE_URL` and `CS_AI_GATEWAY_API_TOKEN` environment variables.
+## Auth
+
+Requires `CS_AI_GATEWAY_BASE_URL` and `CS_AI_GATEWAY_API_TOKEN` environment variables. **These are often already configured** — check with `echo $CS_AI_GATEWAY_BASE_URL` before asking the user to set them. Only prompt the user if they are genuinely missing.
+
+The Corespeed AI Gateway authenticates via `Authorization: Bearer <token>` header only. The `google-genai` library defaults to sending `x-goog-api-key`, which the gateway does **not** use for auth and will forward to Google upstream — causing a rejection if the value is invalid. The script handles this by:
+1. Setting `api_key="gateway"` (placeholder required by the library)
+2. Injecting `Authorization: Bearer <token>` via `HttpOptions.headers`
+3. Overriding `x-goog-api-key` to empty string in the same headers dict to prevent upstream rejection
+
+If you modify the client setup or write new scripts against this gateway, follow the same pattern.
 
 ## Workflow
 
