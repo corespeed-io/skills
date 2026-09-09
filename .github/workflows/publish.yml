@@ -57,11 +57,13 @@ jobs:
       - name: Type-check
         run: bun run type-check
 
-      - name: Tests
-        run: bunx vitest run
-
+      # Build before the tests: the multi-source `add` tests spawn the CLI
+      # through bin/cli.mjs, which loads dist/ (same as upstream's ci.yml order).
       - name: Build
         run: bun run build
+
+      - name: Tests
+        run: bunx vitest run
 
       - name: Publish to npm (trusted publishing)
         run: npm publish --access public
