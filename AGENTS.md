@@ -4,7 +4,13 @@ This file provides guidance to AI coding agents working on the `skills` CLI code
 
 ## Project Overview
 
-`skills` is the CLI for the open agent skills ecosystem.
+`skills` is the CLI for the open agent skills ecosystem. This repository is CoreSpeed's fork, published as `@corespeed/skills`; the delta over upstream is documented at the top of `README.md` and lives in `git log <upstream-tag>..HEAD`.
+
+Fork rules:
+
+- Keep the patch series short and rebase it onto upstream tags; do not merge upstream into the fork branch.
+- `src/add-many.ts` (several sources) and the `--json` path in `src/add.ts` are ours; the argument parser is upstream's, untouched. `runAdd` stays single-source: the orchestrator groups tokens with `parseSource`, spawns one child `add <source> --json -y` per group like `update` does, and folds lock entries via `SKILLS_LOCK_ENTRIES_FILE` / `SKILLS_LOCAL_LOCK_ENTRIES_FILE` (see `skill-lock.ts`, `local-lock.ts`). The one change to install logic is the comma list in `@skill` where `skillFilter` merges into `options.skill`.
+- Build and test with Bun (`bun install`, `bun run build`, `bunx vitest run`). `tests/dist.test.ts` builds with `bun run build`; pnpm is not needed.
 
 ## Commands
 

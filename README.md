@@ -1,3 +1,47 @@
+# @corespeed/skills
+
+CoreSpeed's fork of [vercel-labs/skills](https://github.com/vercel-labs/skills), the CLI for the open agent skills ecosystem. Same commands, same install layout, same lock files. It exists for one reason: an environment setup script should be one line.
+
+```bash
+bunx --bun @corespeed/skills add \
+  corespeed-io/internal-skills \
+  cloudflare/skills@wrangler,workers-best-practices,durable-objects,sandbox-stable \
+  vercel-labs/skills@find-skills \
+  vercel-labs/agent-skills@vercel-react-best-practices \
+  -g -a claude-code universal -y
+```
+
+```
++ corespeed-io/internal-skills: ship, neat-freak, knowledge-placement, unify-design-system, agent-ensemble
++ cloudflare/skills: sandbox-stable, workers-best-practices, wrangler, durable-objects
++ vercel-labs/skills: find-skills
++ vercel-labs/agent-skills: vercel-react-best-practices
+Installed 11 skills from 4 of 4 sources in 2.4s
+```
+
+## What differs from upstream
+
+- **`add` takes several sources.** Each bare argument is a source, and skills are picked on the source itself with upstream's `@skill` syntax, extended to comma lists: `cloudflare/skills@wrangler,durable-objects`. Tokens naming the same repository merge into one clone. `--skill` is rejected with several sources because it would have no clear owner. Sources install concurrently (one child process each), the lock file is written once at the end, and the exit code is non-zero if any source failed. Several sources are always non-interactive, so pass `--agent` (`-y` is implied).
+- **`add --json`** prints one JSON array, one entry per skill (`status`: `installed` | `skipped` | `failed`). This is upstream PR [#1686](https://github.com/vercel-labs/skills/pull/1686) by @hcjmartin, carried here until it merges.
+- **`owner/repo@a,b`** names several skills from one source (upstream's `@skill` takes one). Works with a single source too.
+- **Concise output** for several sources: one line per source plus a total, no boxes. Single-source output is unchanged.
+- `bunx --bun` runs the CLI under Bun; this matters where `node` on `PATH` is a slow shim. Under Node everything works the same.
+
+Everything else, including `ls --json`, `update`, `remove`, `find` and the lock formats, is upstream as of the version in `package.json` (`1.5.25-corespeed.N` tracks upstream `1.5.25`).
+
+## Keeping up with upstream
+
+```bash
+git remote add upstream https://github.com/vercel-labs/skills.git
+git fetch upstream --tags
+git rebase v1.5.26        # the fork is a short patch series on top of an upstream tag
+bun install && bun run type-check && bun run build && bunx vitest run
+```
+
+Then bump `version` to `1.5.26-corespeed.1` and publish. The patch series lives in `git log v1.5.25..HEAD`; keep it small so rebases stay trivial.
+
+---
+
 # skills
 
 The CLI for the open agent skills ecosystem.
