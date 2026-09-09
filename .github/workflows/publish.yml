@@ -4,8 +4,10 @@ name: Publish
 # at the published ref; bump it in a commit, tag `v<version>`, publish a GitHub
 # release for that tag (or run this workflow by hand on the tag).
 #
-# Needs one repository secret: NPM_TOKEN, a granular npm access token with
-# read/write on the @corespeed scope and "bypass 2FA" enabled.
+# Authentication is npm trusted publishing (OIDC): no token, no secret. The
+# package's npm settings list this repository and this workflow filename as a
+# trusted publisher; `id-token: write` lets the job mint the OIDC token that
+# npm exchanges for publish rights, and provenance is attached automatically.
 
 on:
   release:
@@ -38,8 +40,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
-          node-version: '24'
-          registry-url: 'https://registry.npmjs.org'
+          node-version: '24' # bundles npm >= 11.16; trusted publishing needs npm >= 11.5.1
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
@@ -62,7 +63,5 @@ jobs:
       - name: Build
         run: bun run build
 
-      - name: Publish to npm
-        run: npm publish --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Publish to npm (trusted publishing)
+        run: npm publish --access public
