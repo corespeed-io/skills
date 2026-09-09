@@ -12,6 +12,10 @@
     "README.md",
     "ThirdPartyNoticeText.txt"
   ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "scripts": {
     "build": "node scripts/generate-licenses.ts && obuild",
     "generate-licenses": "node scripts/generate-licenses.ts",

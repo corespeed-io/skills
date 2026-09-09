@@ -38,7 +38,7 @@ git rebase v1.5.26        # the fork is a short patch series on top of an upstre
 bun install && bun run type-check && bun run build && bunx vitest run
 ```
 
-Then bump `version` to `1.5.26-corespeed.1` and publish. The patch series lives in `git log v1.5.25..HEAD`; keep it small so rebases stay trivial.
+Then bump `version` to `1.5.26-corespeed.1`, commit, tag `v1.5.26-corespeed.1` and publish a GitHub release for the tag: the `Publish` workflow builds, tests and runs `npm publish --provenance` (it needs the `NPM_TOKEN` repository secret). The patch series lives in `git log v1.5.25..HEAD`; keep it small so rebases stay trivial.
 
 ---
 
