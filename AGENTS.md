@@ -160,12 +160,15 @@ CI will fail if code is not properly formatted.
 
 ## Publishing
 
+Releases are published by `.github/workflows/publish.yml` through npm trusted publishing (OIDC); nobody publishes from a laptop.
+
 ```bash
-# 1. Bump version in package.json
-# 2. Build
-pnpm build
-# 3. Publish
-npm publish
+# 1. Bump `version` in package.json: major.minor = upstream's, patch = next fork release on that line
+#    (set `upstream` too after a rebase); add the row to README's version table
+# 2. Land that commit on `corespeed` through a PR, then tag the merge commit and push the tag.
+#    Tags are `@corespeed/skills@<version>`: plain `v<version>` collides with upstream's tags in this fork.
+git tag -a "@corespeed/skills@<version>" -m "@corespeed/skills <version> (upstream <upstream version>)" && git push --follow-tags
+# 3. Publish a GitHub release for the tag — the workflow builds, tests and publishes
 ```
 
 ## Adding a New Agent

@@ -1,10 +1,11 @@
 {
   "name": "@corespeed/skills",
-  "version": "1.5.25-corespeed.1",
+  "version": "1.5.1",
+  "upstream": "vercel-labs/skills@1.5.25",
   "description": "The open agent skills ecosystem CLI, CoreSpeed fork: install from several sources in one command, with --json output",
   "type": "module",
   "bin": {
-    "skills": "./bin/cli.mjs"
+    "skills": "bin/cli.mjs"
   },
   "files": [
     "dist",

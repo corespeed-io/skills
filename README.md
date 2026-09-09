@@ -27,7 +27,19 @@ Installed 11 skills from 4 of 4 sources in 2.4s
 - **Concise output** for several sources: one line per source plus a total, no boxes. Single-source output is unchanged.
 - `bunx --bun` runs the CLI under Bun; this matters where `node` on `PATH` is a slow shim. Under Node everything works the same.
 
-Everything else, including `ls --json`, `update`, `remove`, `find` and the lock formats, is upstream as of the version in `package.json` (`1.5.25-corespeed.N` tracks upstream `1.5.25`).
+Everything else, including `ls --json`, `update`, `remove`, `find` and the lock formats, is upstream as of the version named in package.json's `upstream` field (`npm view @corespeed/skills upstream`).
+
+## Versioning
+
+One mechanical rule: `major.minor` is upstream's, `patch` counts the fork's releases on that line. So `1.5.1` is the first fork release on upstream's 1.5 line, `1.5.2` the next one (a rebase onto a newer upstream 1.5.x or a fix to the fork's own patches, either way), and when upstream moves to 1.6 the fork continues from `1.6.1`. Every version is a stable release; semver has no slot for a downstream revision (a prerelease sorts before and reads as unstable, build metadata is ignored), so the exact upstream base lives in package.json's `upstream` field (`npm view @corespeed/skills upstream`) and in this table, not in the version number. The table and the field are kept in step by a test.
+
+Because `major.minor` is pinned to upstream, a fork-originated change of any size lands as a patch bump: the fork's patch number carries no semver-patch guarantee, so pin an exact version if that matters to you (a `bunx` one-liner resolves `latest` and does not care).
+
+Release tags are named `@corespeed/skills@<version>`, not `v<version>`: this repository is a GitHub fork of vercel-labs/skills, whose `v1.5.1`…`v1.5.25` tags share the namespace and arrive with `git fetch upstream --tags`.
+
+| @corespeed/skills | upstream skills |
+| ----------------- | --------------- |
+| 1.5.1             | 1.5.25          |
 
 ## Keeping up with upstream
 
@@ -38,7 +50,7 @@ git rebase v1.5.26        # the fork is a short patch series on top of an upstre
 bun install && bun run type-check && bun run build && bunx vitest run
 ```
 
-Then bump `version` to `1.5.26-corespeed.1`, commit, tag `v1.5.26-corespeed.1` and publish a GitHub release for the tag: the `Publish` workflow builds, tests and runs `npm publish`. It authenticates with npm trusted publishing (OIDC), so there is no token to rotate: the package's settings on npmjs.com list `corespeed-io/skills` + `publish.yml` as a trusted publisher, and provenance is attached automatically. The patch series lives in `git log v1.5.25..HEAD`; keep it small so rebases stay trivial.
+Then set `upstream` to `vercel-labs/skills@1.5.26`, bump `version` (`1.5.2`: same upstream line, next fork release), add the row to the table above, land the commit through a PR, tag the merge commit `@corespeed/skills@1.5.2` and publish a GitHub release for the tag: the `Publish` workflow builds, tests and runs `npm publish`. It authenticates with npm trusted publishing (OIDC), so there is no token to rotate: the package's settings on npmjs.com list `corespeed-io/skills` + `publish.yml` as a trusted publisher, and provenance is attached automatically. The patch series lives in `git log <upstream tag>..HEAD`; keep it small so rebases stay trivial.
 
 ---
 

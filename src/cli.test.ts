@@ -34,8 +34,7 @@ describe('skills CLI', () => {
   describe('--version', () => {
     it('should display version number', () => {
       const output = runCliOutput(['--version']);
-      // The fork publishes prerelease-style versions such as 1.5.25-corespeed.1.
-      expect(output.trim()).toMatch(/^\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?$/);
+      expect(output.trim()).toMatch(/^\d+\.\d+\.\d+$/);
     });
 
     it('should match package.json version', () => {
